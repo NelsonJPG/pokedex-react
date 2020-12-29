@@ -29,16 +29,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
       
-const Pokedex = ( {pokemon, getType}) => {
+const Pokedex = ( {pokemon, getType, openModal, setSelectedPokemon}) => {
     const classes = useStyles();
-    
+    const handleSelectedPokemon = () => {
+      openModal(true);
+      setSelectedPokemon(pokemon);
+
+    }
+
     return (
         <Grid item xs={12} sm={6} md={4}>
             <Card className={classes.card} elevation={2}>
             <CardHeader
               avatar={
-                <IconButton aria-label="share">
-                <Pokeball />
+                <IconButton aria-label="share" onClick={handleSelectedPokemon}>
+                  <Pokeball />
                 </IconButton>
               }
              
@@ -46,14 +51,14 @@ const Pokedex = ( {pokemon, getType}) => {
             />
             <CardMedia
                 className={classes.cardMedia}
-                style={{backgroundColor: typeColors[pokemon.types[0].type.name].color}}
+                style={{backgroundColor: typeColors[pokemon.types[0].type.name].background}}
                 image={pokemon.sprites.other["official-artwork"].front_default? pokemon.sprites.other["official-artwork"].front_default: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"}
                 title={pokemon.name}
                 />
             <CardContent className={classes.cardContent}>
               {
                 _.values(pokemon.types).map((type, index) => (
-                  <Chip key={type.type.name + index} style={{backgroundColor: typeColors[type.type.name].color, color: "#ffffff"}} size="small" label={type.type.name} onClick={(value) => getType(type.type.url)} />
+                  <Chip key={type.type.name + index} style={{backgroundColor: typeColors[type.type.name].background, color: "#ffffff"}} size="small" label={type.type.name} onClick={(value) => getType(type.type.url)} />
                 ))
               }
             </CardContent>

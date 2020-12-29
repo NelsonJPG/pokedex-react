@@ -6,10 +6,12 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import clsx from 'clsx';
-import Pokedex from '../../components/Pokedex';
+import Pokedex from '../../components/PokeCard';
 import configApp from '../../config-app';
 import InfiniteScroll from "react-infinite-scroller";
 import SearchIcon from '@material-ui/icons/Search';
+import DialogCustom from '../../components/DialogCustom';
+import DetailsContainer from './DetailsContainer';
 
 const useStyles = makeStyles((theme) => ({
     cardGrid: {
@@ -25,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DashboardContainer = ()  => {
-    const [pokemons, setPokemons] = useState([])
+    const [pokemons, setPokemons] = useState([]);
+    const [selectedpokemon,  setSelectedPokemon] = useState(null);
+   
+    const [open, setOpen] = useState(false);
     const [url, setUrl] = useState(`${configApp.apiurl}/pokemon/?limit=${configApp.pagination}`);
     const classes = useStyles();
     
@@ -73,6 +78,8 @@ const DashboardContainer = ()  => {
             setUrl(`${configApp.apiurl}/pokemon/?limit=${configApp.pagination}`)
         }
     }
+
+    const handleClose = () => setOpen(false);
     
     return (
       <Fragment>
@@ -102,13 +109,16 @@ const DashboardContainer = ()  => {
                         }
                     >
                         <Grid container spacing={4} >
-                            {pokemons.map((pokemon) => <Pokedex key={pokemon.name} pokemon={pokemon} getType={getPokemonsType} />)}
+                            {pokemons.map((pokemon) => <Pokedex key={pokemon.name} pokemon={pokemon} getType={getPokemonsType} openModal={ () =>  setOpen(true)} setSelectedPokemon={setSelectedPokemon} />)}
                         </Grid>
                     </InfiniteScroll>
                 ) : (
                     <h1>No Data Pokemon</h1>
         )}
             </Container>
+            <DialogCustom open={open} handleClose={handleClose} title={selectedpokemon && selectedpokemon.name}>
+                <DetailsContainer pokemon={selectedpokemon} /> 
+            </DialogCustom>
       </Fragment>
     );
 }
