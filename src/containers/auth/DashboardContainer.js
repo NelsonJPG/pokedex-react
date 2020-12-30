@@ -1,7 +1,7 @@
 
 import React, { Fragment, useState, useEffect } from 'react';
 import {
-    Grid, Container, TextField, InputAdornment, CircularProgress, FormControl, InputLabel, Select
+    Grid, Container, TextField, InputAdornment, CircularProgress, FormControl, InputLabel, Select, MenuItem
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -132,7 +132,7 @@ const DashboardContainer = ()  => {
                                 value={typeSelected}
                             >
                                 <option aria-label="None" value="" />
-                                {types.map( type => <option key={type.url} aria-label="None" value={type.url}>{type.name}</option> )}
+                                {types.map( type => <MenuItem key={type.url} aria-label="None" value={type.url}>{type.name}</MenuItem> )}
                             </Select>
                         </FormControl>
                     </Grid>
